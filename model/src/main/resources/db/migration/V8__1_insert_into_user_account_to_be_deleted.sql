@@ -1,0 +1,1 @@
+insert into personal_finance_tracker.user_account values (1, 'Ivo Shurbanovski', 'shurbanovski.i@gmail.com')

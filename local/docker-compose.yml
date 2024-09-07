@@ -1,0 +1,9 @@
+services:
+  pft-db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: pft
+      POSTGRES_PASSWORD: pft
+      POSTGRES_DB: pft
+    ports:
+      - 5433:5432

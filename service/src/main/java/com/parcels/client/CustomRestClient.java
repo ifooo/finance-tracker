@@ -1,0 +1,4 @@
+package com.parcels.client;
+
+public interface CustomRestClient {
+}

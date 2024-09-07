@@ -1,0 +1,1 @@
+create schema if not exists personal_finance_tracker
