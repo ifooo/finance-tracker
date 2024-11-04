@@ -13,6 +13,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serial;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -24,7 +26,7 @@ import java.time.OffsetDateTime;
 public class Transaction extends BaseEntity {
 
     @Serial
-    private static final long serialVersionUID = -3457001373122395190L;
+    private static final long serialVersionUID = 1456798519762847263L;
 
     @Id
     @Column(name = "id", columnDefinition = "serial")
@@ -45,9 +47,14 @@ public class Transaction extends BaseEntity {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
-    private Category category;
+    @ManyToMany
+    @JoinTable(
+            schema = "personal_finance_tracker",
+            name = "transaction_category",
+            joinColumns = @JoinColumn(name = "transaction_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private List<Category> categories = new ArrayList<>();
 
     @Column(name = "date_from")
     private OffsetDateTime dateFrom;
@@ -64,11 +71,11 @@ public class Transaction extends BaseEntity {
 
         Transaction that = (Transaction) o;
 
-        return new EqualsBuilder().appendSuper(super.equals(o)).append(id, that.id).append(userAccount, that.userAccount).append(transactionType, that.transactionType).append(amount, that.amount).append(description, that.description).append(category, that.category).append(dateFrom, that.dateFrom).isEquals();
+        return new EqualsBuilder().appendSuper(super.equals(o)).append(id, that.id).append(userAccount, that.userAccount).append(transactionType, that.transactionType).append(amount, that.amount).append(description, that.description).append(categories, that.categories).append(dateFrom, that.dateFrom).append(currency, that.currency).isEquals();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37).appendSuper(super.hashCode()).append(id).append(userAccount).append(transactionType).append(amount).append(description).append(category).append(dateFrom).toHashCode();
+        return new HashCodeBuilder(17, 37).appendSuper(super.hashCode()).append(id).append(userAccount).append(transactionType).append(amount).append(description).append(categories).append(dateFrom).append(currency).toHashCode();
     }
 }

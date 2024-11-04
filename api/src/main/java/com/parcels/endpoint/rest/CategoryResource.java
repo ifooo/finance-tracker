@@ -8,7 +8,6 @@ import com.parcels.endpoint.dto.out.CategoryOut;
 import com.parcels.endpoint.mapper.PageToPagedResponseOutConverter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/categories")
-@CrossOrigin(maxAge = 3600, origins = "*")
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name = "Category Resource", description = "Endpoints for handling categories")
