@@ -1,8 +1,6 @@
 package com.parcels.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.PrePersist;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,9 +25,22 @@ public class BaseEntity implements Serializable {
     @Column(name = "created_at", nullable = false, updatable = false)
     private OffsetDateTime createdAt;
 
+    @Column(name = "updated_at", nullable = false, updatable = false)
+    private OffsetDateTime updatedAt;
+
+    @Version
+    @Column(name = "version")
+    private Integer version;
+
     @PrePersist
     public void prePersist() {
         createdAt = OffsetDateTime.now();
+        updatedAt = OffsetDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = OffsetDateTime.now();
     }
 
     @Override

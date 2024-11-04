@@ -39,9 +39,9 @@ public class TransactionServiceImpl implements TransactionService {
     public TransactionDto save(TransactionUpdateCommand transactionPersistCommand) {
         Transaction transaction = new Transaction();
         transaction.setTransactionType(transactionPersistCommand.type());
-        if (transactionPersistCommand.categoryId() != null) {
-            Category category = categoryRepository.findById(transactionPersistCommand.categoryId()).orElseThrow();
-            transaction.setCategory(category);
+        if (transactionPersistCommand.categoryIds() != null && !transactionPersistCommand.categoryIds().isEmpty()) {
+            List<Category> categories = categoryRepository.findAllById(transactionPersistCommand.categoryIds());
+            transaction.setCategories(categories);
         }
         transaction.setAmount(transactionPersistCommand.amount());
         transaction.setDescription(transactionPersistCommand.description());

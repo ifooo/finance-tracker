@@ -20,13 +20,14 @@ dependencyManagement{
 dependencies {
     implementation(project(":api"))
     implementation("org.springframework.boot:spring-boot-autoconfigure")
-    implementation("org.springframework.boot:spring-boot-starter-security")
+//    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.postgresql:postgresql")
     implementation("org.flywaydb:flyway-core")
-    implementation("org.keycloak:keycloak-admin-client:${project.properties["keycloakAdminClient"]}")
+    implementation("org.flywaydb:flyway-database-postgresql")
+//    implementation("org.keycloak:keycloak-admin-client:${project.properties["keycloakAdminClient"]}")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
 
