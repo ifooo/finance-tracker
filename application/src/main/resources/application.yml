@@ -27,9 +27,7 @@ spring:
       idle-timeout: 30000
 
   jackson:
-    date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
-    serialization:
-      write-dates-as-timestamps: false
+    # Jackson 3 (Boot 4) writes java.time values as ISO-8601 strings by default.
     default-property-inclusion: always
   mail:
     host: smtp.gmail.com
