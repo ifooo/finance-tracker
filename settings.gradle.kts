@@ -1,6 +1,6 @@
 pluginManagement{
-    val springBootVersion: String by settings
-    val springBootDependencyManagementVersion: String by settings
+    val springBootVersion = providers.gradleProperty("springBootVersion").get()
+    val springBootDependencyManagementVersion = providers.gradleProperty("springBootDependencyManagementVersion").get()
     repositories {
         mavenCentral()
     }
