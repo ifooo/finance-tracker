@@ -20,6 +20,7 @@ dependencyManagement{
 dependencies {
     implementation(project(":api"))
     implementation("org.springframework.boot:spring-boot-autoconfigure")
+    // Security is disabled for now: keep spring-boot-starter-security off the classpath so all endpoints stay open.
 //    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -27,7 +28,6 @@ dependencies {
     implementation("org.postgresql:postgresql")
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-database-postgresql")
-//    implementation("org.keycloak:keycloak-admin-client:${project.properties["keycloakAdminClient"]}")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
 
