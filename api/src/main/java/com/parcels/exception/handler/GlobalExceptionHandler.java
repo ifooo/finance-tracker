@@ -76,7 +76,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DataAccessException.class)
     @Primary
     public ResponseEntity<ErrorDetails> handleDataAccessException(HttpServletRequest request, DataAccessException ex) {
-        final ErrorDetails errorDetails = ErrorDetails.of(request, UNPROCESSABLE_ENTITY, ex.getClass(), ex.getMessage(), rootCause(ex));
+        final ErrorDetails errorDetails = ErrorDetails.of(request, UNPROCESSABLE_CONTENT, ex.getClass(), ex.getMessage(), rootCause(ex));
         final ResponseEntity<ErrorDetails> errorResponse = ResponseEntity.status(errorDetails.getStatus()).body(errorDetails);
         log.error("Caught data access exception => {}", errorResponse.getBody(), ex);
         return errorResponse;

@@ -2,7 +2,7 @@ package com.parcels.infrastucture.extended;
 
 import com.parcels.Application;
 import com.parcels.infrastucture.db.PostgresContainerInitializer;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTestContextBootstrapper;
 import org.springframework.test.context.ActiveProfiles;

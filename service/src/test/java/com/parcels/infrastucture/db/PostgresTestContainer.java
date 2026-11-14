@@ -1,8 +1,8 @@
 package com.parcels.infrastucture.db;
 
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.postgresql.PostgreSQLContainer;
 
-public class PostgresTestContainer extends PostgreSQLContainer<PostgresTestContainer> {
+public class PostgresTestContainer extends PostgreSQLContainer {
 
     private static final String IMAGE_VERSION = "postgres:16";
     private static PostgresTestContainer container;
