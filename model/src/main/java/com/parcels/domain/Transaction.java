@@ -4,13 +4,13 @@ import com.parcels.domain.enums.Currency;
 import com.parcels.domain.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.math.BigDecimal;
 import java.io.Serial;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class Transaction extends BaseEntity {
     private TransactionType transactionType;
 
     @Column(name = "amount", columnDefinition = "numeric")
-    private Double amount;
+    private BigDecimal amount;
 
     @Column(name = "description")
     private String description;
@@ -54,6 +54,7 @@ public class Transaction extends BaseEntity {
             joinColumns = @JoinColumn(name = "transaction_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
+    @Builder.Default
     private List<Category> categories = new ArrayList<>();
 
     @Column(name = "date_from")
@@ -63,19 +64,22 @@ public class Transaction extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Currency currency;
 
+    /**
+     * Entities are equal when they have the same database id. Two unsaved entities (id == null) are never equal.
+     * Uses instanceof and getId() so it also works with Hibernate proxies.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Transaction that = (Transaction) o;
-
-        return new EqualsBuilder().appendSuper(super.equals(o)).append(id, that.id).append(userAccount, that.userAccount).append(transactionType, that.transactionType).append(amount, that.amount).append(description, that.description).append(categories, that.categories).append(dateFrom, that.dateFrom).append(currency, that.currency).isEquals();
+        if (!(o instanceof Transaction other)) return false;
+        return id != null && id.equals(other.getId());
     }
 
+    /**
+     * Constant per class so the hash code does not change when the id is assigned on persist.
+     */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37).appendSuper(super.hashCode()).append(id).append(userAccount).append(transactionType).append(amount).append(description).append(categories).append(dateFrom).append(currency).toHashCode();
+        return Transaction.class.hashCode();
     }
 }

@@ -102,7 +102,15 @@ public class GlobalExceptionHandler {
         return errorResponse;
     }
 
-    @ExceptionHandler({ValidationException.class, EntityNotFoundException.class})
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ErrorDetails> handleEntityNotFoundException(HttpServletRequest request, EntityNotFoundException ex) {
+        final ErrorDetails errorDetails = ErrorDetails.of(request, NOT_FOUND, ex.getClass(), ex.getMessage(), rootCause(ex));
+        final ResponseEntity<ErrorDetails> errorResponse = ResponseEntity.status(errorDetails.getStatus()).body(errorDetails);
+        log.warn("Entity not found => {}", errorResponse.getBody());
+        return errorResponse;
+    }
+
+    @ExceptionHandler(ValidationException.class)
     @Primary
     public ResponseEntity<ErrorDetails> handleValidationException(HttpServletRequest request, Exception ex) {
         final ErrorDetails errorDetails = ErrorDetails.of(request, BAD_REQUEST, ex.getClass(), ex.getMessage(), rootCause(ex));

@@ -10,8 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -39,19 +37,22 @@ public class UserAccount implements Serializable {
     @Email
     private String email;
 
+    /**
+     * Entities are equal when they have the same database id. Two unsaved entities (id == null) are never equal.
+     * Uses instanceof and getId() so it also works with Hibernate proxies.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-
-        if (o == null || getClass() != o.getClass()) return false;
-
-        UserAccount that = (UserAccount) o;
-
-        return new EqualsBuilder().append(id, that.id).append(fullName, that.fullName).append(email, that.email).isEquals();
+        if (!(o instanceof UserAccount other)) return false;
+        return id != null && id.equals(other.getId());
     }
 
+    /**
+     * Constant per class so the hash code does not change when the id is assigned on persist.
+     */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37).append(id).append(fullName).append(email).toHashCode();
+        return UserAccount.class.hashCode();
     }
 }

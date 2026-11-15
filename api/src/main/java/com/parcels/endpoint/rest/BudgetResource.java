@@ -4,6 +4,7 @@ import com.parcels.budget.BudgetService;
 import com.parcels.budget.dto.BudgetDto;
 import com.parcels.budget.dto.BudgetUpdateCommand;
 import com.parcels.endpoint.dto.out.BudgetOut;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.ConversionService;
@@ -24,7 +25,7 @@ public class BudgetResource {
     private final ConversionService conversionService;
 
     @PostMapping
-    public ResponseEntity<BudgetOut> addBudget(@RequestBody BudgetUpdateCommand budgetUpdateCommand) {
+    public ResponseEntity<BudgetOut> addBudget(@Valid @RequestBody BudgetUpdateCommand budgetUpdateCommand) {
         final BudgetDto resultDto = budgetService.save(budgetUpdateCommand);
         final BudgetOut convertedResult = conversionService.convert(resultDto, BudgetOut.class);
         return ResponseEntity.ok(convertedResult);

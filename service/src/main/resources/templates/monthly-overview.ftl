@@ -33,19 +33,19 @@
     <tbody>
     <#list transactions as transaction>
         <tr style="background-color: #f8f8f8;">
-            <td style="padding: 10px; text-align: center; font-size: 0.85em; border: 1px solid #0a0909;">${transaction.dateFrom}</td>
-            <td style="padding: 10px; text-align: center; font-size: 0.85em; border: 1px solid #0a0909;">${transaction.category}
+            <td style="padding: 10px; text-align: center; font-size: 0.85em; border: 1px solid #0a0909;">${transaction.dateFrom().toLocalDate()}</td>
+            <td style="padding: 10px; text-align: center; font-size: 0.85em; border: 1px solid #0a0909;">${transaction.categoryNames()?join(", ")}
             </td>
-            <td style="padding: 10px; text-align: center; font-size: 0.85em; border: 1px solid #0a0909;">${transaction.transactionType}</td>
-            <td style="padding: 10px; text-align: center; font-size: 0.85em; border: 1px solid #0a0909;">${transaction.amount}
+            <td style="padding: 10px; text-align: center; font-size: 0.85em; border: 1px solid #0a0909;">${transaction.transactionType()}</td>
+            <td style="padding: 10px; text-align: center; font-size: 0.85em; border: 1px solid #0a0909;">${transaction.amount()?string("0.00")}
             </td>
-            <td style="padding: 10px; text-align: center; font-size: 0.85em; border: 1px solid #0a0909;">${transaction.currency}
+            <td style="padding: 10px; text-align: center; font-size: 0.85em; border: 1px solid #0a0909;">${transaction.currency()}
             </td>
         </tr>
     </#list>
     </tbody>
 </table>
 
-<p>Your balance for this month is ${balance} MKD.</p>
+<p>Your balance for this month is ${balance?string("0.00")} MKD.</p>
 </body>
 </html>

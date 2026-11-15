@@ -7,9 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.math.BigDecimal;
 import java.io.Serial;
 import java.time.OffsetDateTime;
 
@@ -39,7 +38,7 @@ public class Budget extends BaseEntity {
     private Category category;
 
     @Column(name = "amount", columnDefinition = "numeric")
-    private Double amount;
+    private BigDecimal amount;
 
     @Column(name = "budget_period")
     @Enumerated(EnumType.STRING)
@@ -51,19 +50,22 @@ public class Budget extends BaseEntity {
     @Column(name = "end_date")
     private OffsetDateTime endDate;
 
+    /**
+     * Entities are equal when they have the same database id. Two unsaved entities (id == null) are never equal.
+     * Uses instanceof and getId() so it also works with Hibernate proxies.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Budget budget = (Budget) o;
-
-        return new EqualsBuilder().appendSuper(super.equals(o)).append(id, budget.id).append(user, budget.user).append(category, budget.category).append(amount, budget.amount).append(startDate, budget.startDate).append(endDate, budget.endDate).isEquals();
+        if (!(o instanceof Budget other)) return false;
+        return id != null && id.equals(other.getId());
     }
 
+    /**
+     * Constant per class so the hash code does not change when the id is assigned on persist.
+     */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37).appendSuper(super.hashCode()).append(id).append(user).append(category).append(amount).append(startDate).append(endDate).toHashCode();
+        return Budget.class.hashCode();
     }
 }

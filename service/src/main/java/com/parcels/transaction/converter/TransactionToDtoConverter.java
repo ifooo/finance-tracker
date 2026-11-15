@@ -19,6 +19,7 @@ public class TransactionToDtoConverter implements Converter<Transaction, Transac
                 source.getCurrency(),
                 source.getDescription(),
                 source.getCategories().stream().map(Category::getId).toList(),
+                source.getCategories().stream().map(Category::getName).toList(),
                 source.getDateFrom());
     }
 }

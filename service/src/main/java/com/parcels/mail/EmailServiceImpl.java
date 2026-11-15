@@ -1,5 +1,6 @@
 package com.parcels.mail;
 
+import com.parcels.domain.enums.TransactionType;
 import com.parcels.transaction.dto.TransactionDto;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,28 +36,28 @@ public class EmailServiceImpl implements EmailService {
         helper.setFrom("shurbanovski.i@gmail.com", "Ivo Shurbanovski");
         helper.setTo(recipients);
         helper.setSubject(subject);
-        helper.setText(getEmailContent(transactions), true);
+        helper.setText(renderMonthlyOverview(transactions), true);
 
         mailSender.send(message);
     }
 
-    private String getEmailContent(List<TransactionDto> transactions) {
-
-        // Calculate sum of INCOME and EXPENSE transaction types
-        Double incomeSum = transactions.stream()
-                .filter(t -> t.transactionType().equals(INCOME))
+    private static BigDecimal sumByType(List<TransactionDto> transactions, TransactionType type) {
+        return transactions.stream()
+                .filter(t -> t.transactionType() == type)
                 .map(TransactionDto::amount)
-                .reduce(0.0, Double::sum);
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 
-        Double expenseSum = transactions.stream()
-                .filter(t -> t.transactionType().equals(EXPENSE))
-                .map(TransactionDto::amount)
-                .reduce(0.0, Double::sum);
+    // package-private for tests
+    String renderMonthlyOverview(List<TransactionDto> transactions) {
+
+        BigDecimal incomeSum = sumByType(transactions, INCOME);
+        BigDecimal expenseSum = sumByType(transactions, EXPENSE);
 
         StringWriter stringWriter = new StringWriter();
         Map<String, Object> model = new HashMap<>();
         model.put("transactions", transactions);
-        model.put("balance", incomeSum - expenseSum);
+        model.put("balance", incomeSum.subtract(expenseSum));
 
         try {
             configuration.getTemplate("monthly-overview.ftl").process(model, stringWriter);
