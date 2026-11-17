@@ -1,0 +1,41 @@
+{
+  "$schema": "./transactions.schema.json",
+  "transactions": [
+    {
+      "externalId": "2026-11-15-vero",
+      "type": "EXPENSE",
+      "date": "2026-11-15",
+      "amount": 1250.00,
+      "currency": "MKD",
+      "merchant": "Vero",
+      "description": "Weekly groceries",
+      "categories": ["Groceries"],
+      "paymentMethod": "CARD",
+      "items": [
+        { "name": "Milk 1l", "quantity": 2, "unitPrice": 65.00 },
+        { "name": "Bread", "total": 45.00 },
+        { "name": "Other groceries", "total": 1075.00 }
+      ]
+    },
+    {
+      "type": "EXPENSE",
+      "date": "2026-11-16T20:15:00+01:00",
+      "amount": 18.50,
+      "currency": "EUR",
+      "merchant": "Trattoria",
+      "description": "Dinner",
+      "categories": ["Restaurants"],
+      "paymentMethod": "CASH"
+    },
+    {
+      "type": "INCOME",
+      "date": "2026-11-10",
+      "amount": 60000.00,
+      "currency": "MKD",
+      "merchant": "Employer",
+      "description": "November salary",
+      "categories": ["Salary"],
+      "paymentMethod": "BANK_TRANSFER"
+    }
+  ]
+}

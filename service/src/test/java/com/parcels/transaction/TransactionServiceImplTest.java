@@ -176,9 +176,30 @@ class TransactionServiceImplTest extends BaseDbTest {
         assertThat(saved.categoryNames()).containsExactlyInAnyOrder("Food", "Fun");
     }
 
+    // --- Person ---
+
+    @Test
+    void saveAssignsTheNamedPersonOrTheDefault() {
+        userAccountRepository.save(com.parcels.domain.UserAccount.builder().username("ana").fullName("Ana Petrova").build());
+        TransactionUpdateCommand forAna = new TransactionUpdateCommand(null, EXPENSE, BigDecimal.TEN, Currency.MKD, "x", List.of(), JAN_15, "Ana");
+
+        assertThat(transactionService.save(forAna).personUsername()).isEqualTo("ana");
+        assertThat(transactionService.save(command(List.of())).personUsername())
+                .isEqualTo(userAccountRepository.findById(1L).orElseThrow().getUsername());
+    }
+
+    @Test
+    void saveRejectsUnknownPerson() {
+        TransactionUpdateCommand forNobody = new TransactionUpdateCommand(null, EXPENSE, BigDecimal.TEN, Currency.MKD, "x", List.of(), JAN_15, "nobody");
+
+        assertThatThrownBy(() -> transactionService.save(forNobody))
+                .isInstanceOf(ValidationException.class)
+                .hasMessageStartingWith("unknown person \"nobody\"");
+    }
+
     private static TransactionUpdateCommand command(List<Long> categoryIds) {
         return new TransactionUpdateCommand(null, EXPENSE, new BigDecimal("12.50"), Currency.MKD,
-                "with categories", categoryIds, JAN_15);
+                "with categories", categoryIds, JAN_15, null);
     }
 
     private Transaction save(TransactionType type, OffsetDateTime date, String amount) {

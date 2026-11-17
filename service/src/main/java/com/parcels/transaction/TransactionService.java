@@ -16,14 +16,8 @@ public interface TransactionService {
     Boolean delete(Long id);
 
     /**
-     * dwfs
-     *
-     * @param transactionType
-     * @param from
-     * @param to
-     * @param page
-     * @param size
-     * @return
+     * Transactions of one type, optionally limited to an inclusive {@code from}/{@code to} range on the transaction date,
+     * newest first.
      */
     Page<TransactionDto> getTransactionsByTypeAndDateRange(TransactionType transactionType,
                                                            OffsetDateTime from,

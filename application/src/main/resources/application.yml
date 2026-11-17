@@ -1,9 +1,14 @@
 spring:
+  config:
+    # Personal settings and secrets live outside the repository.
+    import: optional:file:${user.home}/.config/finance-tracker/application.yml
   banner:
     location: banner.txt
   flyway:
     enabled: true
     schemas: personal_finance_tracker
+    # db/seed holds default data (categories) for the app only; tests use db/migration alone.
+    locations: classpath:db/migration,classpath:db/seed
   jpa:
     database: default
     open-in-view: false
@@ -29,15 +34,30 @@ spring:
   jackson:
     # Jackson 3 (Boot 4) writes java.time values as ISO-8601 strings by default.
     default-property-inclusion: always
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: shurbanovski.i
-    password: kmax gmej gnyz iubw
-    properties:
-      mail:
-        smtp:
-          starttls:
-            enable: true
-          auth: true
 
+pft:
+  # People in the household: define them in ~/.config/finance-tracker/application.yml (see local/finance-tracker.example.yml)
+  # so names stay out of git. Transactions without a "person" belong to household.default-person (or the first person).
+  # household:
+  #   default-person: ivo
+  #   people:
+  #     - username: ivo
+  #       name: Ivo
+  inbox:
+    enabled: true
+    # Drop *.json files here; they are moved to processed/ or failed/ (with a .error.txt) inside this folder.
+    dir: ${user.home}/finance/inbox
+    poll-interval: PT30S
+    settle-time: PT5S
+    auto-create-categories: false
+  reports:
+    # Spreadsheets and PDFs are written here.
+    outbox-dir: ${user.home}/finance/outbox
+    # Rewrite <yyyy-MM>-report.xlsx and transactions.csv whenever data changes.
+    live-spreadsheet: true
+    pdf:
+      enabled: true
+      # From this day on, last month's PDF is generated (once); the gap leaves time to add late receipts.
+      day-of-month: 2
+      # Daily check (plus one at startup, which catches up on runs missed while the machine was off).
+      check-cron: "0 0 8 * * *"

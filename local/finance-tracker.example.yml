@@ -1,0 +1,25 @@
+# Personal settings for the finance tracker. Copy to ~/.config/finance-tracker/application.yml
+# (outside the repository) and change what you need:
+#
+#   mkdir -p ~/.config/finance-tracker
+#   cp local/finance-tracker.example.yml ~/.config/finance-tracker/application.yml
+#
+# Anything from application/src/main/resources/application.yml can be overridden here.
+
+pft:
+  household:
+    # Used when a transaction does not say whose it is. Defaults to the first person below.
+    default-person: ivo
+    # Created or updated at startup, matched by username. Removing someone here does not delete them.
+    people:
+      - username: ivo          # what you write in inbox files: "person": "ivo" (the first name works too)
+        name: Ivo              # shown in reports
+      - username: partner
+        name: Partner Name
+  inbox:
+    dir: ${user.home}/finance/inbox
+    # auto-create-categories: true
+  reports:
+    outbox-dir: ${user.home}/finance/outbox
+    pdf:
+      day-of-month: 2

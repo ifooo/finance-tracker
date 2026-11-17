@@ -18,6 +18,12 @@ public class TransactionDtoToOutConverter implements Converter<TransactionDto, T
                 source.currency(),
                 source.description(),
                 source.categoryIds(),
-                source.dateFrom());
+                source.categoryNames(),
+                source.dateFrom(),
+                source.merchant(),
+                source.paymentMethod(),
+                source.notes(),
+                source.source(),
+                source.person());
     }
 }

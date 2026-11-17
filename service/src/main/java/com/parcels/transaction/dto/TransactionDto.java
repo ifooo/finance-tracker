@@ -1,6 +1,8 @@
 package com.parcels.transaction.dto;
 
 import com.parcels.domain.enums.Currency;
+import com.parcels.domain.enums.PaymentMethod;
+import com.parcels.domain.enums.TransactionSource;
 import com.parcels.domain.enums.TransactionType;
 
 import java.math.BigDecimal;
@@ -14,5 +16,12 @@ public record TransactionDto(Long id,
                              String description,
                              List<Long> categoryIds,
                              List<String> categoryNames,
-                             OffsetDateTime dateFrom) {
+                             OffsetDateTime dateFrom,
+                             String merchant,
+                             PaymentMethod paymentMethod,
+                             String notes,
+                             TransactionSource source,
+                             List<TransactionItemDto> items,
+                             String personUsername,
+                             String person) {
 }

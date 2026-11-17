@@ -1,6 +1,8 @@
 package com.parcels.domain;
 
 import com.parcels.domain.enums.Currency;
+import com.parcels.domain.enums.PaymentMethod;
+import com.parcels.domain.enums.TransactionSource;
 import com.parcels.domain.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -63,6 +65,40 @@ public class Transaction extends BaseEntity {
     @Column(name = "currency")
     @Enumerated(EnumType.STRING)
     private Currency currency;
+
+    @Column(name = "merchant")
+    private String merchant;
+
+    @Column(name = "payment_method")
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;
+
+    @Column(name = "notes")
+    private String notes;
+
+    @Column(name = "source", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private TransactionSource source = TransactionSource.API;
+
+    /** Optional, client-supplied id (unique), used to avoid importing the same entry twice. */
+    @Column(name = "external_id")
+    private String externalId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "import_file_id")
+    private ImportFile importFile;
+
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("id")
+    @Builder.Default
+    private List<TransactionItem> items = new ArrayList<>();
+
+    /** Adds a receipt line and links it back to this transaction. */
+    public void addItem(TransactionItem item) {
+        item.setTransaction(this);
+        items.add(item);
+    }
 
     /**
      * Entities are equal when they have the same database id. Two unsaved entities (id == null) are never equal.

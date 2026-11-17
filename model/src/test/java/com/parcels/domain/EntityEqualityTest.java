@@ -34,7 +34,7 @@ class EntityEqualityTest {
 
     @Test
     void differentEntityTypesWithSameIdAreNotEqual() {
-        assertNotEquals(Category.builder().id(1L).build(), Goal.builder().id(1L).build());
+        assertNotEquals(Category.builder().id(1L).build(), Transaction.builder().id(1L).build());
     }
 
     @Test

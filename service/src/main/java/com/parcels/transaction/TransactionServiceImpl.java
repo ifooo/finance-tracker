@@ -3,15 +3,16 @@ package com.parcels.transaction;
 import com.parcels.domain.Category;
 import com.parcels.domain.Transaction;
 import com.parcels.domain.enums.TransactionType;
-import com.parcels.mail.EmailService;
+import com.parcels.report.ReportDataChangedEvent;
 import com.parcels.repository.CategoryRepository;
 import com.parcels.repository.TransactionRepository;
-import com.parcels.repository.UserAccountRepository;
+import com.parcels.person.PersonService;
 import com.parcels.transaction.dto.TransactionDto;
 import com.parcels.transaction.dto.TransactionUpdateCommand;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,8 +22,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Clock;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -41,8 +44,9 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
     private final CategoryRepository categoryRepository;
     private final ConversionService conversionService;
-    private final UserAccountRepository userAccountRepository;
-    private final EmailService emailService;
+    private final PersonService personService;
+    private final ApplicationEventPublisher events;
+    private final Clock clock;
 
     @Override
     public TransactionDto getById(Long id) {
@@ -60,9 +64,10 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setDescription(transactionPersistCommand.description());
         transaction.setDateFrom(transactionPersistCommand.datetime());
         transaction.setCurrency(transactionPersistCommand.currency());
-        transaction.setUserAccount(userAccountRepository.findById(1L).orElseThrow());
+        transaction.setUserAccount(personService.resolve(transactionPersistCommand.person()));
 
         Transaction saved = transactionRepository.save(transaction);
+        events.publishEvent(ReportDataChangedEvent.forDates(Collections.singletonList(saved.getDateFrom()), clock.getZone()));
 
         TransactionDto result = conversionService.convert(saved, TransactionDto.class);
         return result;
@@ -72,6 +77,7 @@ public class TransactionServiceImpl implements TransactionService {
     public Boolean delete(Long id) {
         Transaction transaction = findTransaction(id);
         transactionRepository.delete(transaction);
+        events.publishEvent(ReportDataChangedEvent.forDates(Collections.singletonList(transaction.getDateFrom()), clock.getZone()));
         return true;
     }
 

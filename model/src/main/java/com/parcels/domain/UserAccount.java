@@ -2,6 +2,8 @@ package com.parcels.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
@@ -12,8 +14,10 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.io.Serial;
-import java.io.Serializable;
 
+/**
+ * A person in the household whose transactions are tracked.
+ */
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,14 +25,19 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Table(name = "user_account", schema = "personal_finance_tracker")
-public class UserAccount implements Serializable {
+public class UserAccount extends BaseEntity {
 
     @Serial
     private static final long serialVersionUID = 7628497573733216875L;
 
     @Id
     @Column(name = "id", columnDefinition = "serial")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    /** Short, unique id used in inbox files, e.g. "ivo". */
+    @Column(name = "username", nullable = false, length = 50)
+    private String username;
 
     @Column(name = "name")
     private String fullName;
@@ -36,6 +45,11 @@ public class UserAccount implements Serializable {
     @Column(name = "email")
     @Email
     private String email;
+
+    /** Name to show in reports: the full name, or the username when there is none. */
+    public String displayName() {
+        return fullName == null || fullName.isBlank() ? username : fullName;
+    }
 
     /**
      * Entities are equal when they have the same database id. Two unsaved entities (id == null) are never equal.
