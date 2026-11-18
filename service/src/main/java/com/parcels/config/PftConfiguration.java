@@ -7,10 +7,10 @@ import org.springframework.context.annotation.Configuration;
 import java.time.Clock;
 
 @Configuration
-@EnableConfigurationProperties({InboxProperties.class, ReportProperties.class, HouseholdProperties.class})
+@EnableConfigurationProperties({ReportProperties.class, HouseholdProperties.class})
 public class PftConfiguration {
 
-    /** System clock in the local zone; month boundaries and plain dates in inbox files use this zone. */
+    /** System clock in the local zone; report month boundaries use this zone. */
     @Bean
     public Clock clock() {
         return Clock.systemDefaultZone();

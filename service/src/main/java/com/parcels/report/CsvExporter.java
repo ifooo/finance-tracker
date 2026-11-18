@@ -29,7 +29,7 @@ public class CsvExporter {
 
     static final String FILE_NAME = "transactions.csv";
     static final List<String> HEADER = List.of("id", "date", "datetime", "person", "type", "amount", "signed_amount", "currency",
-            "categories", "merchant", "description", "payment_method", "source", "external_id", "notes");
+            "categories", "merchant", "description", "payment_method", "source", "notes");
 
     public Path export(List<Transaction> transactions, ZoneId zone, Path outboxDir) {
         Objects.requireNonNull(outboxDir, "pft.reports.outbox-dir is not configured");
@@ -70,7 +70,6 @@ public class CsvExporter {
                 str(t.getDescription()),
                 str(t.getPaymentMethod()),
                 str(t.getSource()),
-                str(t.getExternalId()),
                 str(t.getNotes()));
     }
 

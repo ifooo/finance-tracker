@@ -1,7 +1,7 @@
 spring:
   config:
-    # Personal settings and secrets live outside the repository.
-    import: optional:file:${user.home}/.config/finance-tracker/application.yml
+    # Personal settings live outside the repository. Override the location with -Dpft.config-file=... (tests do).
+    import: optional:file:${pft.config-file:${user.home}/.config/finance-tracker/application.yml}
   banner:
     location: banner.txt
   flyway:
@@ -37,19 +37,12 @@ spring:
 
 pft:
   # People in the household: define them in ~/.config/finance-tracker/application.yml (see local/finance-tracker.example.yml)
-  # so names stay out of git. Transactions without a "person" belong to household.default-person (or the first person).
+  # so names stay out of git. Transactions without a person belong to household.default-person (or the first person).
   # household:
   #   default-person: ivo
   #   people:
   #     - username: ivo
   #       name: Ivo
-  inbox:
-    enabled: true
-    # Drop *.json files here; they are moved to processed/ or failed/ (with a .error.txt) inside this folder.
-    dir: ${user.home}/finance/inbox
-    poll-interval: PT30S
-    settle-time: PT5S
-    auto-create-categories: false
   reports:
     # Spreadsheets and PDFs are written here.
     outbox-dir: ${user.home}/finance/outbox

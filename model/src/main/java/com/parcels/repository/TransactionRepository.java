@@ -30,6 +30,4 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long>,
     @EntityGraph(attributePaths = {"categories", "userAccount"})
     @Query("select distinct t from Transaction t order by t.dateFrom, t.id")
     List<Transaction> findAllForExport();
-
-    boolean existsByExternalId(String externalId);
 }

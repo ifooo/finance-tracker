@@ -7,7 +7,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-/** Applies pft.household.people to the database at startup, before the inbox is first read. */
+/** Applies pft.household.people to the database at startup. */
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RequiredArgsConstructor

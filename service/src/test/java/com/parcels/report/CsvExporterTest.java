@@ -42,8 +42,7 @@ class CsvExporterTest {
                 .merchant("Веро Центар")
                 .description("Weekly \"big\" shop, with extras")
                 .paymentMethod(PaymentMethod.CARD)
-                .source(TransactionSource.INBOX_JSON)
-                .externalId("r-1")
+                .source(TransactionSource.API)
                 .notes("line one\nline two")
                 .userAccount(UserAccount.builder().username("ana").fullName("Ana Test").build())
                 .categories(new ArrayList<>(List.of(Category.builder().name("Groceries").build(),
@@ -63,10 +62,10 @@ class CsvExporterTest {
         assertThat(bytes).startsWith(0xEF, 0xBB, 0xBF); // UTF-8 BOM for Excel
         String csv = new String(bytes, StandardCharsets.UTF_8).substring(1);
         assertThat(csv).isEqualTo(
-                "id,date,datetime,person,type,amount,signed_amount,currency,categories,merchant,description,payment_method,source,external_id,notes\r\n"
+                "id,date,datetime,person,type,amount,signed_amount,currency,categories,merchant,description,payment_method,source,notes\r\n"
                 + "7,2026-11-01,2026-11-01T00:30+01:00,Ana Test,EXPENSE,1250.00,-1250.00,MKD,\"Groceries; Utilities (Electricity, Water, Gas)\","
-                + "Веро Центар,\"Weekly \"\"big\"\" shop, with extras\",CARD,INBOX_JSON,r-1,\"line one\nline two\"\r\n"
-                + "8,2026-11-10,2026-11-10T10:00+01:00,,INCOME,60000,60000,MKD,,,,,API,,\r\n");
+                + "Веро Центар,\"Weekly \"\"big\"\" shop, with extras\",CARD,API,\"line one\nline two\"\r\n"
+                + "8,2026-11-10,2026-11-10T10:00+01:00,,INCOME,60000,60000,MKD,,,,,API,\r\n");
     }
 
     @Test

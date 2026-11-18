@@ -9,9 +9,6 @@ spring:
     hibernate:
       ddl-auto: validate
 pft:
-  inbox:
-    enabled: false
-    dir: ${java.io.tmpdir}/pft-test/inbox
   reports:
     outbox-dir: ${java.io.tmpdir}/pft-test/outbox
     live-spreadsheet: false

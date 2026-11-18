@@ -47,5 +47,7 @@ subprojects {
 
     tasks.withType<Test>().configureEach {
         useJUnitPlatform()
+        // Keep tests independent of the developer's ~/.config/finance-tracker/application.yml (the file does not exist).
+        systemProperty("pft.config-file", layout.buildDirectory.file("no-personal-config.yml").get().asFile.path)
     }
 }

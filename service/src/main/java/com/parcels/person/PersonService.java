@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Knows the household members: resolves "person" values from inbox files and the API, and picks the default person.
+ * Knows the household members: resolves the "person" of a transaction and picks the default person.
  */
 @Service
 @Transactional
@@ -47,7 +47,7 @@ public class PersonService {
         return userAccountRepository.findAllByOrderByIdAsc();
     }
 
-    /** A lookup over all people, for resolving many names at once (e.g. one inbox file). */
+    /** A lookup over all people, for resolving many names at once. */
     @Transactional(readOnly = true)
     public PersonLookup lookup() {
         return new PersonLookup(all(), defaultPerson());

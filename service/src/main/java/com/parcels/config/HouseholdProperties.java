@@ -22,7 +22,7 @@ public record HouseholdProperties(String defaultPerson,
                                   @DefaultValue List<@Valid Person> people) {
 
     /**
-     * @param username short id used in inbox files ("person": "ivo"): lowercase letters, digits, '-' or '_'
+     * @param username short id ("ivo"), accepted as a transaction's person: lowercase letters, digits, '-' or '_'
      * @param name     display name in reports
      */
     public record Person(@NotBlank @Pattern(regexp = "[a-z0-9_-]{1,50}") String username,

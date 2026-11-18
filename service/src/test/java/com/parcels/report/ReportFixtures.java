@@ -36,7 +36,7 @@ public final class ReportFixtures {
         OffsetDateTime date = OffsetDateTime.of(2026, 10, 5, 18, 0, 0, 0, ZoneOffset.UTC);
         TransactionDto groceries = new TransactionDto(1L, TransactionType.EXPENSE, new BigDecimal("1250.00"), Currency.MKD,
                 "Weekly <groceries>", List.of(6L), List.of("Groceries"), date, "Веро Центар", PaymentMethod.CARD, null,
-                TransactionSource.INBOX_JSON,
+                TransactionSource.API,
                 List.of(new TransactionItemDto("Milk", new BigDecimal("2"), new BigDecimal("65.00"), new BigDecimal("130.00")),
                         new TransactionItemDto("Bread", null, null, new BigDecimal("45.00"))),
                 "ivo", IVO);
@@ -45,10 +45,10 @@ public final class ReportFixtures {
                 "ivo", IVO);
         TransactionDto dinner = new TransactionDto(3L, TransactionType.EXPENSE, new BigDecimal("18.50"), Currency.EUR,
                 "Dinner", List.of(7L, 11L), List.of("Dining/Restaurants", "Entertainment"), date, "Trattoria", PaymentMethod.CASH,
-                "with friends", TransactionSource.INBOX_JSON, List.of(), "ana", ANA);
+                "with friends", TransactionSource.API, List.of(), "ana", ANA);
         TransactionDto pharmacy = new TransactionDto(4L, TransactionType.EXPENSE, new BigDecimal("400.00"), Currency.MKD,
                 "Pharmacy", List.of(6L), List.of("Groceries"), date.plusDays(1), "Zegin", PaymentMethod.CARD, null,
-                TransactionSource.INBOX_JSON, List.of(), "ana", ANA);
+                TransactionSource.API, List.of(), "ana", ANA);
 
         return new MonthlyReport(
                 YearMonth.of(2026, 10),

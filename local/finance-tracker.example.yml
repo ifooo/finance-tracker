@@ -12,13 +12,10 @@ pft:
     default-person: ivo
     # Created or updated at startup, matched by username. Removing someone here does not delete them.
     people:
-      - username: ivo          # what you write in inbox files: "person": "ivo" (the first name works too)
+      - username: ivo          # short id; the first or full name also works as a transaction's person
         name: Ivo              # shown in reports
-      - username: partner
-        name: Partner Name
-  inbox:
-    dir: ${user.home}/finance/inbox
-    # auto-create-categories: true
+      - username: marija
+        name: Marija
   reports:
     outbox-dir: ${user.home}/finance/outbox
     pdf:

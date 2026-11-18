@@ -81,14 +81,6 @@ public class Transaction extends BaseEntity {
     @Builder.Default
     private TransactionSource source = TransactionSource.API;
 
-    /** Optional, client-supplied id (unique), used to avoid importing the same entry twice. */
-    @Column(name = "external_id")
-    private String externalId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "import_file_id")
-    private ImportFile importFile;
-
     @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("id")
     @Builder.Default

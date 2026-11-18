@@ -35,7 +35,7 @@ public class UserAccount extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** Short, unique id used in inbox files, e.g. "ivo". */
+    /** Short, unique id, e.g. "ivo"; also accepted as the "person" of a transaction. */
     @Column(name = "username", nullable = false, length = 50)
     private String username;
 
